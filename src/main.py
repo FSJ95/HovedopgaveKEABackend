@@ -29,8 +29,8 @@ def fetch_feed(link: Link):
     with urlopen(url) as x:
         data = x.read().decode('utf-8')
     
-    with open('/Users/olive/Desktop/'+"feed."+ext, 'w') as f:
-        f.write(data)   
+    # with open('/Users/olive/Desktop/'+"feed."+ext, 'w') as f:
+    #     f.write(data)   
 
     return {"Status": "Sucess"}
 
