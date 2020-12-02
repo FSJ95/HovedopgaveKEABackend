@@ -1,33 +1,38 @@
-#HACK: Removes error-message for "from pydantic import BaseModel" statement
-# pylint: disable=no-name-in-module
-# pylint: disable=no-self-argument
-# Find tutorial here: https://fastapi.tiangolo.com/
-
-from typing import Optional
+from models.link import Link
 
 from fastapi import FastAPI
-from pydantic import BaseModel
+import re
+from urllib.request import urlopen
 
 app = FastAPI()
-
-
-
-class Item(BaseModel):
-    name: str
-    price: float
-    is_offer: Optional[bool] = None
-
 
 @app.get("/")
 def read_root():
     return {"Hello": "World"}
 
+@app.get("/upload/link/")
+def fetch_file(link: Link):
 
-@app.get("/items/{item_id}")
-def read_item(item_id: int, q: Optional[str] = None):
-    return {"item_id": item_id, "q": q}
+    url = link.url
 
+    allowedTypes = ["csv", "json", "xml"]
 
-@app.put("/items/{item_id}")
-def update_item(item_id: int, item: Item):
-    return {"item_name": item.name, "item_id": item_id}
+    if url.find('/'):
+        nameAndType = url.rsplit('/', 1)[1]
+        print(nameAndType)
+        onlyType = nameAndType.rsplit('.', 1)[1]
+        print(onlyType)
+        if onlyType not in allowedTypes:
+            return {"Error": "Filetype not allowed"}          
+
+    with urlopen(url) as x:
+        data = x.read().decode('utf-8')
+    
+    #TODO: Do something with the fetched file 
+
+    #TODO: Set all the requirements for how many objects, rotation osv
+
+    # with open('/Users/olive/Desktop/'+nameAndType, 'w') as f:
+    #     f.write(data)
+
+    return {"Download": "Suceeded"}
