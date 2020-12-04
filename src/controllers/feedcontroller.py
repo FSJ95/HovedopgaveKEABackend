@@ -34,8 +34,7 @@ def get_and_parse_feed(feedRequstArgs: FeedRequestArgs):
         toJson = xml_stream_to_json(data)
 
         if(not toJson):            
-            return errorMsg
-        
+            return errorMsg       
 
     if(toJson):
         return {
