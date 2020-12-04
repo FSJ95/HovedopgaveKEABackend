@@ -88,7 +88,7 @@ def fetch_file(link: Link):
     #     f.write(data)
 
     return {
-                "status" : "Succes",
+                "status" : "Success",
                 "file" : {
                     "name": name,
                     "ext" : ext,
