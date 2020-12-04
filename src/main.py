@@ -27,18 +27,21 @@ def fetch_feed(link: Link):
     ext = r.headers['content-type'].split('/')[-1].split(";")[0] # get extension of file and character and splits again to only get extension
 
     if ext not in allowedFeedTypes:
-        statusMessage = {"Status": "Error: Feed is not a supported filetype"}
-
+        return {"Status": "Error: Feed is not a supported filetype"}
+        
     with urlopen(url) as x:
         data = x.read().decode('utf-8')
 
     if ext == "xml":
-        statusMessage = xml_stream_to_json(data)
+        dump = xml_stream_to_json(data)
+        if(dump):
+            statusMessage = {"Status": "Success"}
+
+        #TODO: Upload dump to S3 bucket
+
+        # with open('./'+"test.json", 'w', encoding='utf8') as f:
+        #     f.write(dump) 
     
-    # with open('/Users/olive/Desktop/'+"feed."+ext, 'w') as f:
-    #     f.write(data)   
-
-
     return statusMessage
 
 @app.get("/upload/link/")
