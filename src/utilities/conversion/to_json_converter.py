@@ -2,6 +2,7 @@ import csv
 import json
 import xmltodict
 import os
+import io
 
 
 def xml_stream_to_json(xml_stream):
@@ -18,8 +19,16 @@ def xml_stream_to_json(xml_stream):
     
     return {"Status": "Sucess"}
 
-def csv_file_to_json(csv_file_path):
+def csv_stream_to_json(csv_stream):
     """
         Takes a csv file path, reads file and converts to json format
     """
-    pass
+
+    csv_json = csv.DictReader(io.StringIO(csv_stream))
+ 
+    jsonDump = json.dumps(list(csv_json), ensure_ascii=False)
+
+    with open('./'+"test.json", 'w', encoding='utf8') as f:
+        f.write(jsonDump)
+    
+    return {"Status": "Sucess"}

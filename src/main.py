@@ -48,16 +48,15 @@ def fetch_file(link: Link):
 
     if url.find('/'):
         nameAndType = url.rsplit('/', 1)[1]
-        print(nameAndType)
-        onlyType = nameAndType.rsplit('.', 1)[1]
-        print(onlyType)
-        if onlyType not in allowedLinkTypes:
-            return {"Status": "Error: "+onlyType+" is not supported"}          
+        ext = nameAndType.rsplit('.', 1)[1]
+        if ext not in allowedLinkTypes:
+            return {"Status": "Error: "+ ext +" is not supported"}          
 
     with urlopen(url) as x:
         data = x.read().decode('utf-8')
     
-    #TODO: Do something with the fetched file 
+    if ext == 'csv':
+        return csv_stream_to_json(data)
 
     #TODO: Set all the requirements for how many objects, rotation osv
 
