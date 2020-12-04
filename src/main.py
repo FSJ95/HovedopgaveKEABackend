@@ -1,5 +1,6 @@
 from utilities.conversion.to_json_converter import *
-from models.link import Link
+from models.feedrequestargs import FeedRequestArgs
+from models.linkrequestargs import LinkRequestArgs
 
 from fastapi import FastAPI
 import re
@@ -17,51 +18,55 @@ def read_root():
     return {"Hello": "World"}
 
 @app.get("/upload/feed")
-def fetch_feed(link: Link):
+def fetch_feed(feedRequstArgs: FeedRequestArgs):
 
-    statusMessage = {"Status": "Error"}
+    errorMsg = {"Status": "Error"}
 
-    url = link.url
+    url = feedRequstArgs.url
 
     r = requests.get(url, allow_redirects=True)
 
     ext = r.headers['content-type'].split('/')[-1].split(";")[0] # get extension of file and character and splits again to only get extension
 
     if ext not in allowedFeedTypes:
-        return {"Status": "Error: Feed is not a supported filetype"}
+        return {"Status": "Error: "+ ext +" is not a supported filetype"}
         
     with urlopen(url) as x:
         data = x.read().decode('utf-8')
 
     if ext == 'csv':
-        dump = csv_stream_to_json(data)
+        toJson = csv_stream_to_json(data)
 
-        if(dump):
-            statusMessage = {"Status": "Success"} 
-
-        return statusMessage        
+        if(not toJson):
+            return errorMsg        
 
     if ext == "xml":
-        dump = xml_stream_to_json(data)
+        toJson = xml_stream_to_json(data)
 
-        if(dump):
-            statusMessage = {"Status": "Success"}
-
-        return statusMessage
+        if(not toJson):            
+            return errorMsg
         
     #TODO: Upload dump to S3 bucket
 
         # with open('./'+"test.json", 'w', encoding='utf8') as f:
         #     f.write(dump) 
-    
-    return statusMessage
+
+    if(toJson):
+        return {
+                    "status" : "Success",
+                    "file" : {
+                        "name": "feed",
+                        "ext" : ext,
+                        "content" : json.loads(toJson)
+                    }
+            }
 
 @app.get("/upload/link/")
-def fetch_file(link: Link):
+def fetch_file(linkRequestArgs: LinkRequestArgs):
 
     errorMsg = {"Status": "Error"}
 
-    url = link.url
+    url = linkRequestArgs.url
 
     if url.find('/'):
         name = url.rsplit('/', 1)[1]
@@ -87,11 +92,12 @@ def fetch_file(link: Link):
     # with open('/Users/olive/Desktop/'+nameAndType, 'w') as f:
     #     f.write(data)
 
-    return {
-                "status" : "Success",
-                "file" : {
-                    "name": name,
-                    "ext" : ext,
-                    "content" : json.loads(toJson)
-                }
-           }
+    if(toJson):
+        return {
+                    "status" : "Success",
+                    "file" : {
+                        "name": name,
+                        "ext" : ext,
+                        "content" : json.loads(toJson)
+                    }
+            }

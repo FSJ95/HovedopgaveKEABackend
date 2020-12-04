@@ -5,5 +5,5 @@
 
 from pydantic import BaseModel
 
-class Link(BaseModel):
+class FeedRequestArgs(BaseModel):
     url: str
