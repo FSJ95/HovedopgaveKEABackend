@@ -90,7 +90,8 @@ def fetch_file(link: Link):
     return {
                 "status" : "Succes",
                 "file" : {
-                    "content" : json.loads(toJson),
-                    "ext" : ext
+                    "name": name,
+                    "ext" : ext,
+                    "content" : json.loads(toJson)
                 }
            }
