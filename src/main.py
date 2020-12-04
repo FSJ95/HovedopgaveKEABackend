@@ -5,6 +5,7 @@ from fastapi import FastAPI
 import re
 from urllib.request import urlopen
 import requests
+import json
 
 app = FastAPI()
 
@@ -58,7 +59,7 @@ def fetch_feed(link: Link):
 @app.get("/upload/link/")
 def fetch_file(link: Link):
 
-    statusMessage = {"Status": "Error"}
+    errorMsg = {"Status": "Error"}
 
     url = link.url
 
@@ -75,22 +76,26 @@ def fetch_file(link: Link):
     if ext == 'csv':
         dump = csv_stream_to_json(data)
 
-        if(dump):
-            statusMessage = {"Status": "Success"} 
+        if(not dump):
+            return errorMsg
 
-        return statusMessage        
+         
 
     if ext == "xml":
         dump = xml_stream_to_json(data)
 
-        if(dump):
-            statusMessage = {"Status": "Success"} 
-
-        return statusMessage      
+        if(not dump):
+            return errorMsg      
 
     #TODO: Set all the requirements for how many objects, rotation osv
 
     # with open('/Users/olive/Desktop/'+nameAndType, 'w') as f:
     #     f.write(data)
 
-    return statusMessage
+    return {
+                "status" : "Succes",
+                "file" : {
+                    "content" : json.loads(dump),
+                    "ext" : ext
+                }
+           }
