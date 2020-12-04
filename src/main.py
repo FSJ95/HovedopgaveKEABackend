@@ -64,27 +64,22 @@ def fetch_file(link: Link):
     url = link.url
 
     if url.find('/'):
-        nameAndType = url.rsplit('/', 1)[1]
-        ext = nameAndType.rsplit('.', 1)[1]
+        name = url.rsplit('/', 1)[1]
+        ext = name.rsplit('.', 1)[1]
         if ext not in allowedLinkTypes:
             return {"Status": "Error: "+ ext +" is not supported"}          
 
     with urlopen(url) as x:
         data = x.read().decode('utf-8')
         
-    
     if ext == 'csv':
-        dump = csv_stream_to_json(data)
-
-        if(not dump):
+        toJson = csv_stream_to_json(data)
+        if(not toJson):
             return errorMsg
 
-         
-
     if ext == "xml":
-        dump = xml_stream_to_json(data)
-
-        if(not dump):
+        toJson = xml_stream_to_json(data)
+        if(not toJson):
             return errorMsg      
 
     #TODO: Set all the requirements for how many objects, rotation osv
@@ -95,7 +90,7 @@ def fetch_file(link: Link):
     return {
                 "status" : "Succes",
                 "file" : {
-                    "content" : json.loads(dump),
+                    "content" : json.loads(toJson),
                     "ext" : ext
                 }
            }
