@@ -13,8 +13,8 @@ def xml_stream_to_json(xml_stream):
  
     jsonDump = json.dumps(xml_json, ensure_ascii=False)
 
-    # with open('/Users/olive/Desktop/'+"test.json", 'w', encoding='utf8') as f:
-    #     f.write(jsonDump)   
+    with open('/Users/olive/Desktop/'+"test.json", 'w', encoding='utf8') as f:
+        f.write(jsonDump)   
     
     return {"Status": "Sucess"}
 

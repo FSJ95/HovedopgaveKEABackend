@@ -30,7 +30,7 @@ def fetch_feed(link: Link):
         statusMessage = {"Status": "Error: Feed is not a supported filetype"}
 
     with urlopen(url) as x:
-        data = x.read().decode('iso-8859-1')
+        data = x.read().decode('utf-8')
 
     if ext == "xml":
         statusMessage = xml_stream_to_json(data)
