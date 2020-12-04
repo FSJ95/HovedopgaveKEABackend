@@ -8,7 +8,7 @@ import requests
 
 app = FastAPI()
 
-allowedFeedTypes = ["xml"]
+allowedFeedTypes = ["xml, csv"]
 allowedLinkTypes = ["csv", "json", "xml"]
 
 @app.get("/")
@@ -32,12 +32,23 @@ def fetch_feed(link: Link):
     with urlopen(url) as x:
         data = x.read().decode('utf-8')
 
+    if ext == 'csv':
+        dump = csv_stream_to_json(data)
+
+        if(dump):
+            statusMessage = {"Status": "Success"} 
+
+        return statusMessage        
+
     if ext == "xml":
         dump = xml_stream_to_json(data)
+
         if(dump):
             statusMessage = {"Status": "Success"}
 
-        #TODO: Upload dump to S3 bucket
+        return statusMessage
+        
+    #TODO: Upload dump to S3 bucket
 
         # with open('./'+"test.json", 'w', encoding='utf8') as f:
         #     f.write(dump) 
@@ -46,6 +57,8 @@ def fetch_feed(link: Link):
 
 @app.get("/upload/link/")
 def fetch_file(link: Link):
+
+    statusMessage = {"Status": "Error"}
 
     url = link.url
 
@@ -57,13 +70,27 @@ def fetch_file(link: Link):
 
     with urlopen(url) as x:
         data = x.read().decode('utf-8')
+        
     
     if ext == 'csv':
-        return csv_stream_to_json(data)
+        dump = csv_stream_to_json(data)
+
+        if(dump):
+            statusMessage = {"Status": "Success"} 
+
+        return statusMessage        
+
+    if ext == "xml":
+        dump = xml_stream_to_json(data)
+
+        if(dump):
+            statusMessage = {"Status": "Success"} 
+
+        return statusMessage      
 
     #TODO: Set all the requirements for how many objects, rotation osv
 
     # with open('/Users/olive/Desktop/'+nameAndType, 'w') as f:
     #     f.write(data)
 
-    return {"Status": "Sucess"}
+    return statusMessage
