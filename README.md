@@ -1,3 +1,4 @@
+To activate enviroment: .\env\Scripts\activate
 # Backend
 
 ```

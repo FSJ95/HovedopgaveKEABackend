@@ -1,3 +1,4 @@
+from utilities.conversion.to_json_converter import *
 from models.link import Link
 
 from fastapi import FastAPI
@@ -17,6 +18,8 @@ def read_root():
 @app.get("/upload/feed")
 def fetch_feed(link: Link):
 
+    statusMessage = {"Status": "Error"}
+
     url = link.url
 
     r = requests.get(url, allow_redirects=True)
@@ -24,15 +27,19 @@ def fetch_feed(link: Link):
     ext = r.headers['content-type'].split('/')[-1].split(";")[0] # get extension of file and character and splits again to only get extension
 
     if ext not in allowedFeedTypes:
-        return {"Status": "Error: Feed is not a supported filetype"}
+        statusMessage = {"Status": "Error: Feed is not a supported filetype"}
 
     with urlopen(url) as x:
         data = x.read().decode('utf-8')
-    
-    with open("./feed."+ext, 'w') as f:
-        f.write(data)   
 
-    return {"Status": "Sucess"}
+    if ext == "xml":
+        statusMessage = xml_stream_to_json(data)
+    
+    # with open('/Users/olive/Desktop/'+"feed."+ext, 'w') as f:
+    #     f.write(data)   
+
+
+    return statusMessage
 
 @app.get("/upload/link/")
 def fetch_file(link: Link):
