@@ -5,5 +5,7 @@
 
 from pydantic import BaseModel
 
-class LinkRequestArgs(BaseModel):
+#TODO: Set all the requirements for how many objects, rotation osv
+
+class FileRequestArgs(BaseModel):
     url: str
