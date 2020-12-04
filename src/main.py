@@ -20,6 +20,10 @@ def read_root():
 @app.get("/upload/feed")
 def fetch_feed(feedRequstArgs: FeedRequestArgs):
 
+    #TODO: Validation of input
+
+    #TODO: Refactor to controller
+
     errorMsg = {"Status": "Error"}
 
     url = feedRequstArgs.url
@@ -63,6 +67,10 @@ def fetch_feed(feedRequstArgs: FeedRequestArgs):
 
 @app.get("/upload/link/")
 def fetch_file(linkRequestArgs: LinkRequestArgs):
+
+    #TODO: Validation of input
+
+    #TODO: Refactor to controller
 
     errorMsg = {"Status": "Error"}
 
