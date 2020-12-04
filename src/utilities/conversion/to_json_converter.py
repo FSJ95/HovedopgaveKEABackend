@@ -18,14 +18,14 @@ def xml_stream_to_json(xml_stream):
 
 def csv_stream_to_json(csv_stream):
     """
-        Takes a csv file path, reads file and converts to json format
+        Takes an csv string and converts to json format in utf-8
     """
 
     csv_json = csv.DictReader(io.StringIO(csv_stream))
  
     jsonDump = json.dumps(list(csv_json), ensure_ascii=False)
 
-    with open('./'+"test.json", 'w', encoding='utf8') as f:
-        f.write(jsonDump)
+    # with open('./'+"test.json", 'w', encoding='utf8') as f:
+    #     f.write(jsonDump)
     
-    return {"Status": "Sucess"}
+    return jsonDump
