@@ -1,3 +1,4 @@
+from utilities.conversion.to_json_converter import *
 from models.link import Link
 
 from fastapi import FastAPI
@@ -27,12 +28,16 @@ def fetch_feed(link: Link):
         return {"Status": "Error: Feed is not a supported filetype"}
 
     with urlopen(url) as x:
-        data = x.read().decode('utf-8')
-    
-    with open('/Users/olive/Desktop/'+"feed."+ext, 'w') as f:
-        f.write(data)   
+        data = x.read().decode('iso-8859-1')
 
-    return {"Status": "Sucess"}
+    if ext == "xml":
+        statusMessage = xml_stream_to_json(data)
+    
+    
+    # with open('/Users/olive/Desktop/'+"feed."+ext, 'w') as f:
+    #     f.write(data)   
+
+    return statusMessage
 
 @app.get("/upload/link/")
 def fetch_file(link: Link):
