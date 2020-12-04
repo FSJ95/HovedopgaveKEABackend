@@ -11,14 +11,14 @@ def xml_stream_to_json(xml_stream):
     #with open(xml_file_path, 'r') as xml_file:
         #xml_json = xmltodict.parse(xml_file.read())
 
-    with open('/Users/olive/Desktop/'+"test.xml", 'w', encoding="iso-8859-1") as f:
+    with open('./'+"test.xml", 'w', encoding="iso-8859-1") as f:
         f.write(xml_stream)      
 
     xml_json = xmltodict.parse(xml_stream)
 
     jsonDump = json.dumps(xml_json)  
 
-    with open('/Users/olive/Desktop/'+"test.json", 'w', encoding="iso-8859-1") as f:
+    with open('./'+"test.json", 'w', encoding="iso-8859-1") as f:
         f.write(jsonDump)   
     
     return {"Status": "Sucess"}
