@@ -46,7 +46,7 @@ def fetch_file_request(fileRequestArgs: FileRequestArgs):
 
     validation = validate_input(fileRequestArgs)
 
-    if(validation is not True):
+    if(validation is not None):
         return validation   
 
     return get_and_parse_file(fileRequestArgs)
