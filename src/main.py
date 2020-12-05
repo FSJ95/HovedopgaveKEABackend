@@ -3,9 +3,13 @@ from utilities.conversion.to_json_converter import *
 from controllers.linkcontroller import *
 from controllers.feedcontroller import *
 from controllers.templatecontroller import *
+from controllers.amazoncontroller import *
+
 
 from fastapi import FastAPI
 from urllib.request import urlopen
+
+s3Bucket = "arn:aws:s3:::hovedopgave"
 
 app = FastAPI()
 
@@ -37,9 +41,16 @@ def fetch_feed_request(feedRequstArgs: FeedRequestArgs):
     if(validation is not None):
         return validation
 
-    return get_and_parse_feed(feedRequstArgs)
+    jsonData = get_and_parse_feed(feedRequstArgs)
 
-    #TODO: Upload to S3 bucket
+    return jsonData
+
+    if(upload_file(jsonData, s3Bucket, "test")):
+        return jsonData
+    
+    else:
+        return {"Status:" : "Error: Error in s3 upload"}
+
     
 @app.get("/upload/link/")
 def fetch_file_request(fileRequestArgs: FileRequestArgs):
