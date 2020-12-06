@@ -1,7 +1,7 @@
 import logging
 import boto3
+import json
 from botocore.exceptions import ClientError
-
 
 def upload_file(file_name, bucket, object_name=None):
     """Upload a file to an S3 bucket
@@ -14,12 +14,14 @@ def upload_file(file_name, bucket, object_name=None):
 
     # If S3 object_name was not specified, use file_name
     if object_name is None:
-        object_name = file_name
+        object_name = file_name.file.content
+
+    #print(file_name["file"]["content"])
 
     # Upload the file
     s3_client = boto3.client('s3')
     try:
-        with open(file_name, "rb") as f:
+        with open(json.dumps(file_name["file"]["content"]), "rb") as f:
             response = s3_client.upload_fileobj(f, bucket, object_name)
     except ClientError as e:
         logging.error(e)
