@@ -14,6 +14,11 @@ s3Bucket = "arn:aws:s3:::hovedopgave"
 app = FastAPI()
 
 @app.get("/")
+def index():
+
+    return {"Message" : "This should show info about the API"}
+
+@app.get("/templates")
 def get_templates_request():
 
     return get_all_templates()
