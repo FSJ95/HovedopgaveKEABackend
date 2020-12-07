@@ -5,6 +5,8 @@ from controllers.amazoncontroller import *
 from utilities.conversion.to_json_converter import *
 
 from urllib.request import urlopen
+
+import uuid
 import requests
 
 allowedFeedTypes = ["xml", "csv"]

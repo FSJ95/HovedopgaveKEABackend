@@ -6,6 +6,8 @@ from utilities.conversion.to_json_converter import *
 
 from urllib.request import urlopen
 
+import uuid
+
 allowedLinkTypes = ["csv", "json", "xml"]
 
 def get_and_parse_file(fileRequestArgs: FileRequestArgs):
@@ -36,7 +38,7 @@ def get_and_parse_file(fileRequestArgs: FileRequestArgs):
     return upload_file_and_return(toJson, name, ext)
 
 def upload_file_and_return(jsonData, name, ext):
-    if(upload_file(jsonData, "3.json")):
+    if(upload_file(jsonData, name+".json")):
         return {
                     "status" : "Success",
                     "file" : {
