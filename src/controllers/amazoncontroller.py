@@ -26,7 +26,7 @@ def upload_file(content, file_name=None):
 
     # If S3 object_name was not specified, use file_name
     if file_name is None:
-        file_name = content[0:10] + '.json'
+        file_name = content[0:20] + '.json'
 
     # Upload the file
     try:
