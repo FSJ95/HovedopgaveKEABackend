@@ -42,3 +42,6 @@ def upload_file(content, bucket, object_name=None):
 
 
     return True
+
+def delete_upload_from_amazon(upload_id):
+    return None

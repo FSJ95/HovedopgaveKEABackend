@@ -44,6 +44,10 @@ def delete_template_request(template_id: int):
 
     return delete_template(template_id)   
 
+@app.delete("/upload/{upload_id}")
+def delete_upload(upload_id: int):
+    return delete_upload_from_amazon(upload_id)
+
 @app.get("/upload/feed")
 def fetch_feed_request(feedRequstArgs: FeedRequestArgs):
 
