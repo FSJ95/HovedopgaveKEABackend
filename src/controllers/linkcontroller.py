@@ -35,12 +35,4 @@ def get_and_parse_file(fileRequestArgs: FileRequestArgs):
     # with open('/Users/olive/Desktop/'+nameAndType, 'w') as f:
     #     f.write(data)
 
-    if(toJson):
-        return {
-                    "status" : "Success",
-                    "file" : {
-                        "name": name,
-                        "ext" : ext,
-                        "content" : json.loads(toJson)
-                    }
-            }
+    return toJson

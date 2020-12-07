@@ -9,7 +9,7 @@ from controllers.amazoncontroller import *
 from fastapi import FastAPI
 from urllib.request import urlopen
 
-s3Bucket = "arn:aws:s3:::hovedopgave"
+s3Bucket = "arn:aws:s3:us-east-1:266540320093:accesspoint/svinesvin"
 
 app = FastAPI()
 
@@ -53,14 +53,11 @@ def fetch_feed_request(feedRequstArgs: FeedRequestArgs):
 
     jsonData = get_and_parse_feed(feedRequstArgs)
 
-    return jsonData
-
     if(upload_file(jsonData, s3Bucket, "test")):
         return jsonData
     
     else:
         return {"Status:" : "Error: Error in s3 upload"}
-
     
 @app.get("/upload/link/")
 def fetch_file_request(fileRequestArgs: FileRequestArgs):

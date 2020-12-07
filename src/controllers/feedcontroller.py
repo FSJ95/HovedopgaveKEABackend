@@ -36,12 +36,4 @@ def get_and_parse_feed(feedRequstArgs: FeedRequestArgs):
         if(not toJson):            
             return errorMsg       
 
-    if(toJson):
-        return {
-                    "status" : "Success",
-                    "file" : {
-                        "name": "feed",
-                        "ext" : ext,
-                        "content" : json.loads(toJson)
-                    }
-            }   
+    return toJson
