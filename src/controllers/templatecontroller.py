@@ -12,7 +12,7 @@ def get_template(template_id: int):
 def get_all_templates():
     
     # Connect to your postgres DB
-    conn = psycopg2.connect("dbname=database-1 user=postgres password=jojaerklam")
+    conn = psycopg2.connect("dbname=database-2 user=postgres password=jojaerklam host=database-2.ca7pqa3dikbd.us-east-1.rds.amazonaws.com port=5432")
 
     # Open a cursor to perform database operations
     cur = conn.cursor()
