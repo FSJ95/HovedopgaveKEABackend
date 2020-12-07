@@ -9,9 +9,6 @@ from controllers.amazoncontroller import *
 from fastapi import FastAPI
 from urllib.request import urlopen
 
-
-s3Bucket = "keabucket"
-
 app = FastAPI()
 
 @app.get("/")
@@ -45,7 +42,7 @@ def delete_template_request(template_id: int):
     return delete_template(template_id)   
 
 @app.delete("/upload/{upload_id}")
-def delete_upload(upload_id: int):
+def delete_upload(upload_id):
     return delete_upload_from_amazon(upload_id)
 
 @app.get("/upload/feed")
@@ -58,7 +55,7 @@ def fetch_feed_request(feedRequstArgs: FeedRequestArgs):
 
     jsonData, ext = get_and_parse_feed(feedRequstArgs)
 
-    if(upload_file(jsonData, s3Bucket, "3.json")):
+    if(upload_file(jsonData, "3.json")):
         return {
                     "status" : "Success",
                     "file" : {
@@ -81,7 +78,7 @@ def fetch_file_request(fileRequestArgs: FileRequestArgs):
 
     jsonData, name, ext = get_and_parse_file(fileRequestArgs)
     
-    if(upload_file(jsonData, s3Bucket, name + ".json")):
+    if(upload_file(jsonData, name + ".json")):
         return {
                     "status" : "Success",
                     "file" : {

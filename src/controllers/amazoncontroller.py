@@ -7,6 +7,7 @@ import io
 AWS_ACCESS_KEY_ID = 'AKIAZIPZIJIZYAAYD3VL'
 AWS_SECRET_ACCESS_KEY = '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'
 REGION_NAME = 'eu-north-1'
+BUCKET = 'keabucket'
 
 def getClient():
     return boto3.client('s3',
@@ -14,7 +15,7 @@ def getClient():
                         aws_secret_access_key=AWS_SECRET_ACCESS_KEY,
                         region_name=REGION_NAME)
 
-def upload_file(content, bucket, object_name=None):
+def upload_file(content, object_name=None):
     """Upload a file to an S3 bucket
 
     :param file_name: File to upload
@@ -29,7 +30,7 @@ def upload_file(content, bucket, object_name=None):
 
     # Upload the file
     try:
-        getClient().put_object(Body=content, Bucket=bucket, Key=object_name, ACL='public-read')
+        getClient().put_object(Body=content, Bucket=BUCKET, Key=object_name, ACL='public-read')
     except ClientError as e:
          logging.error(e)
          return False
@@ -38,5 +39,14 @@ def upload_file(content, bucket, object_name=None):
     return True
 
 def delete_upload_from_amazon(upload_id):
-    return None
+
+    #retrieve filename from upload id instead of this:
+    file_name = upload_id
+
+    try:
+        getClient().delete_object(Bucket=BUCKET, Key=file_name)
+    except ClientError as e:
+         logging.error(e)
+         return False
+    return True
                         
