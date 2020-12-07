@@ -32,4 +32,4 @@ def get_and_parse_file(fileRequestArgs: FileRequestArgs):
         if(not toJson):
             return errorMsg      
 
-    return {"jsonLoaded": json.loads(toJson), "json": toJson, "ext": ext, "name": name}
+    return toJson, name, ext

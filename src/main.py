@@ -1,3 +1,4 @@
+import json
 from utilities.conversion.to_json_converter import *
 
 from controllers.linkcontroller import *
@@ -74,15 +75,15 @@ def fetch_file_request(fileRequestArgs: FileRequestArgs):
     if(validation is not None):
         return validation   
 
-    jsonData = get_and_parse_file(fileRequestArgs)
+    jsonData, name, ext = get_and_parse_file(fileRequestArgs)
     
-    if(upload_file(jsonData["json"], s3Bucket, jsonData["name"]+".json")):
+    if(upload_file(jsonData, s3Bucket, name + ".json")):
         return {
                     "status" : "Success",
                     "file" : {
-                        "name": jsonData["name"],
-                        "ext" : jsonData["ext"],
-                        "content" : jsonData["jsonLoaded"]
+                        "name": name,
+                        "ext" : ext,
+                        "content" : json.loads(jsonData)
                     }
                 }      
     
