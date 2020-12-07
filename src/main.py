@@ -23,6 +23,11 @@ def get_templates_request():
 
     return get_all_templates()
 
+@app.get("/templates/{template_id}")
+def get_template_request(template_id: int):
+
+    return get_template(template_id)
+
 @app.put("/templates/{template_id}")
 def update_template_request(template_id: int, templateArgs: TemplateArgs):
 

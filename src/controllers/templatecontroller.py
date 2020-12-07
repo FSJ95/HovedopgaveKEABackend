@@ -2,6 +2,10 @@ from models.templateargs import TemplateArgs
 
 #TODO: Implement all banner template logic in here including database handling
 
+def get_template(template_id: int):
+
+    return "This should a specific template"
+
 def get_all_templates():
 
     return "This should return all templates"
