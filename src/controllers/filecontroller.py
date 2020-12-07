@@ -1,6 +1,6 @@
 from models.filerequestargs import FileRequestArgs
 
-from controllers.amazoncontroller import *
+from controllers.bucketcontroller import *
 
 from utilities.conversion.to_json_converter import *
 
@@ -38,7 +38,7 @@ def get_and_parse_file(fileRequestArgs: FileRequestArgs):
     return upload_file_and_return(toJson, name, ext)
 
 def upload_file_and_return(jsonData, name, ext):
-    if(upload_file(jsonData, name+".json")):
+    if(upload_file(jsonData, str(uuid.uuid4())+".json")):
         return {
                     "status" : "Success",
                     "file" : {

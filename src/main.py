@@ -4,7 +4,6 @@ from utilities.conversion.to_json_converter import *
 from controllers.filecontroller import *
 from controllers.feedcontroller import *
 from controllers.templatecontroller import *
-from controllers.amazoncontroller import *
 
 from fastapi import FastAPI
 from urllib.request import urlopen
@@ -62,6 +61,8 @@ def fetch_file_request(fileRequestArgs: FileRequestArgs):
 
     if(validation is not None):
         return validation   
+    
+    return get_and_parse_file(fileRequestArgs)
 
 def validate_input(input):
 
