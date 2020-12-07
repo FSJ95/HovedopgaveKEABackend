@@ -9,7 +9,7 @@ from controllers.amazoncontroller import *
 from fastapi import FastAPI
 from urllib.request import urlopen
 
-s3Bucket = "arn:aws:s3:us-east-1:266540320093:accesspoint/svinesvin"
+s3Bucket = "keabucket"
 
 app = FastAPI()
 
@@ -53,7 +53,7 @@ def fetch_feed_request(feedRequstArgs: FeedRequestArgs):
 
     jsonData = get_and_parse_feed(feedRequstArgs)
 
-    if(upload_file(jsonData, s3Bucket, "test")):
+    if(upload_file(jsonData, s3Bucket, "test123")):
         return jsonData
     
     else:

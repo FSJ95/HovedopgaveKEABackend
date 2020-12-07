@@ -4,7 +4,7 @@ import json
 from botocore.exceptions import ClientError
 import io
 
-def upload_file(file_name, bucket, object_name=None):
+def upload_file(content, bucket, object_name=None):
     """Upload a file to an S3 bucket
 
     :param file_name: File to upload
@@ -13,22 +13,32 @@ def upload_file(file_name, bucket, object_name=None):
     :return: True if file was uploaded, else False
     """ 
 
+    AWS_ACCESS_KEY_ID = 'AKIAZIPZIJIZYAAYD3VL'
+    AWS_SECRET_ACCESS_KEY = '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'
+    REGION_NAME = 'eu-north-1'
+
+    S3_RESOURCE = boto3.resource('s3',
+                                aws_access_key_id=AWS_ACCESS_KEY_ID,
+                                aws_secret_access_key=AWS_SECRET_ACCESS_KEY,
+                                region_name=REGION_NAME)
+
+    S3_CLIENT = boto3.client('s3',
+                            aws_access_key_id=AWS_ACCESS_KEY_ID,
+                            aws_secret_access_key=AWS_SECRET_ACCESS_KEY,
+                            region_name=REGION_NAME)
+
+    BUCKET_SRC = S3_RESOURCE.Bucket(bucket)
 
     # If S3 object_name was not specified, use file_name
     if object_name is None:
-        object_name = file_name
-
-    s3 = boto3.resource('s3')
-
-    s3.Object(bucket, object_name).put(Body=file_name)
+        object_name = content
 
     # Upload the file
-    # s3_client = boto3.client('s3')  
-    # try:
-    #     response = s3_client.upload_fileobj(filename, bucket, object_name)
-    # except ClientError as e:
-    #     logging.error(e)
-    #     return False
+    try:
+        S3_CLIENT.put_object(Body=content, Bucket=bucket, Key=object_name, ACL='public-read')
+    except ClientError as e:
+         logging.error(e)
+         return False
 
 
     return True
