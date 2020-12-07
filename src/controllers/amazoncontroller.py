@@ -1,8 +1,6 @@
 import logging
 import boto3
-import json
 from botocore.exceptions import ClientError
-import io
 
 AWS_ACCESS_KEY_ID = 'AKIAZIPZIJIZYAAYD3VL'
 AWS_SECRET_ACCESS_KEY = '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'

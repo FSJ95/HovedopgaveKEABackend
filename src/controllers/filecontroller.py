@@ -1,9 +1,10 @@
 from models.filerequestargs import FileRequestArgs
 
+from controllers.amazoncontroller import *
+
 from utilities.conversion.to_json_converter import *
 
 from urllib.request import urlopen
-import json
 
 allowedLinkTypes = ["csv", "json", "xml"]
 
@@ -32,4 +33,18 @@ def get_and_parse_file(fileRequestArgs: FileRequestArgs):
         if(not toJson):
             return errorMsg      
 
-    return toJson, name, ext
+    return upload_file_and_return(toJson, name, ext)
+
+def upload_file_and_return(jsonData, name, ext):
+    if(upload_file(jsonData, "3.json")):
+        return {
+                    "status" : "Success",
+                    "file" : {
+                        "name": name,
+                        "ext" : ext,
+                        "content" : json.loads(jsonData)
+                    }
+                }      
+    
+    else:
+        return {"status:" : "Error: Error in s3 upload"}

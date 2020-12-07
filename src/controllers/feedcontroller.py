@@ -1,10 +1,11 @@
 from models.feedrequestargs import FeedRequestArgs
 
+from controllers.amazoncontroller import *
+
 from utilities.conversion.to_json_converter import *
 
 from urllib.request import urlopen
 import requests
-import json
 
 allowedFeedTypes = ["xml", "csv"]
 
@@ -34,6 +35,20 @@ def get_and_parse_feed(feedRequstArgs: FeedRequestArgs):
         toJson = xml_stream_to_json(data)
 
         if(not toJson):            
-            return errorMsg       
+            return errorMsg     
 
-    return toJson, ext
+    return upload_feed_and_return(toJson, ext)
+
+def upload_feed_and_return(jsonData, ext):
+    if(upload_file(jsonData, "3.json")):
+        return {
+                    "status" : "Success",
+                    "file" : {
+                        "name": "feed",
+                        "ext" : ext,
+                        "content" : json.loads(jsonData)
+                    }
+                }      
+    
+    else:
+        return {"status:" : "Error: Error in s3 upload"}

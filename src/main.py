@@ -1,7 +1,7 @@
 import json
 from utilities.conversion.to_json_converter import *
 
-from controllers.linkcontroller import *
+from controllers.filecontroller import *
 from controllers.feedcontroller import *
 from controllers.templatecontroller import *
 from controllers.amazoncontroller import *
@@ -53,20 +53,7 @@ def fetch_feed_request(feedRequstArgs: FeedRequestArgs):
     if(validation is not None):
         return validation
 
-    jsonData, ext = get_and_parse_feed(feedRequstArgs)
-
-    if(upload_file(jsonData, "3.json")):
-        return {
-                    "status" : "Success",
-                    "file" : {
-                        "name": "feed",
-                        "ext" : ext,
-                        "content" : json.loads(jsonData)
-                    }
-                }      
-    
-    else:
-        return {"status:" : "Error: Error in s3 upload"}
+    return get_and_parse_feed(feedRequstArgs)
     
 @app.get("/upload/link/")
 def fetch_file_request(fileRequestArgs: FileRequestArgs):
@@ -75,22 +62,6 @@ def fetch_file_request(fileRequestArgs: FileRequestArgs):
 
     if(validation is not None):
         return validation   
-
-    jsonData, name, ext = get_and_parse_file(fileRequestArgs)
-    
-    if(upload_file(jsonData, name + ".json")):
-        return {
-                    "status" : "Success",
-                    "file" : {
-                        "name": name,
-                        "ext" : ext,
-                        "content" : json.loads(jsonData)
-                    }
-                }      
-    
-    else:
-        return {"status:" : "Error: Error in s3 upload"}
-
 
 def validate_input(input):
 
