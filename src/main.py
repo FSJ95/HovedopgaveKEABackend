@@ -5,9 +5,9 @@ from controllers.feedcontroller import *
 from controllers.templatecontroller import *
 from controllers.amazoncontroller import *
 
-
 from fastapi import FastAPI
 from urllib.request import urlopen
+
 
 s3Bucket = "keabucket"
 
@@ -53,11 +53,18 @@ def fetch_feed_request(feedRequstArgs: FeedRequestArgs):
 
     jsonData = get_and_parse_feed(feedRequstArgs)
 
-    if(upload_file(jsonData, s3Bucket, "test123")):
-        return jsonData
+    if(upload_file(jsonData["json"], s3Bucket, "1.json")):
+        return {
+                    "status" : "Success",
+                    "file" : {
+                        "name": "feed",
+                        "ext" : jsonData["ext"],
+                        "content" : jsonData["jsonLoaded"]
+                    }
+                }      
     
     else:
-        return {"Status:" : "Error: Error in s3 upload"}
+        return {"status:" : "Error: Error in s3 upload"}
     
 @app.get("/upload/link/")
 def fetch_file_request(fileRequestArgs: FileRequestArgs):
@@ -67,15 +74,26 @@ def fetch_file_request(fileRequestArgs: FileRequestArgs):
     if(validation is not None):
         return validation   
 
-    return get_and_parse_file(fileRequestArgs)
-
-    #TODO: Upload to S3 bucket
+    jsonData = get_and_parse_file(fileRequestArgs)
+    
+    if(upload_file(jsonData["json"], s3Bucket, jsonData["name"]+".json")):
+        return {
+                    "status" : "Success",
+                    "file" : {
+                        "name": jsonData["name"],
+                        "ext" : jsonData["ext"],
+                        "content" : jsonData["jsonLoaded"]
+                    }
+                }      
+    
+    else:
+        return {"status:" : "Error: Error in s3 upload"}
 
 
 def validate_input(input):
 
     if(input == None):
-        return {"Status": "Error: input cannot be None"}
+        return {"status": "Error: input cannot be None"}
 
     #TODO: Add more validation
 

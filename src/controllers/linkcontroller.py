@@ -32,7 +32,4 @@ def get_and_parse_file(fileRequestArgs: FileRequestArgs):
         if(not toJson):
             return errorMsg      
 
-    # with open('/Users/olive/Desktop/'+nameAndType, 'w') as f:
-    #     f.write(data)
-
-    return toJson
+    return {"jsonLoaded": json.loads(toJson), "json": toJson, "ext": ext, "name": name}
