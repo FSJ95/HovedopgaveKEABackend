@@ -58,7 +58,7 @@ def fetch_feed_request(feedRequstArgs: FeedRequestArgs):
 
     jsonData, ext = get_and_parse_feed(feedRequstArgs)
 
-    if(upload_file(jsonData, s3Bucket, "2.json")):
+    if(upload_file(jsonData, s3Bucket, "3.json")):
         return {
                     "status" : "Success",
                     "file" : {
