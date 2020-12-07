@@ -51,15 +51,15 @@ def fetch_feed_request(feedRequstArgs: FeedRequestArgs):
     if(validation is not None):
         return validation
 
-    jsonData = get_and_parse_feed(feedRequstArgs)
+    jsonData, ext = get_and_parse_feed(feedRequstArgs)
 
-    if(upload_file(jsonData["json"], s3Bucket, "1.json")):
+    if(upload_file(jsonData, s3Bucket, "2.json")):
         return {
                     "status" : "Success",
                     "file" : {
                         "name": "feed",
-                        "ext" : jsonData["ext"],
-                        "content" : jsonData["jsonLoaded"]
+                        "ext" : ext,
+                        "content" : json.loads(jsonData)
                     }
                 }      
     
