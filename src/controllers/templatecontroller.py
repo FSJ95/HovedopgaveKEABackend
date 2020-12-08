@@ -37,7 +37,9 @@ def get_template(template_id: int):
 
     # Retrieve query results
     records = cur.fetchall()
-    
+
+    return {"Name": "Test"}
+
     return records
 
 def get_all_templates():
