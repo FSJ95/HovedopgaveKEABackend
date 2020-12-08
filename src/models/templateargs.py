@@ -12,5 +12,11 @@ class TemplateArgs(BaseModel):
     height: int
     tags: list
     createdDate: str
+    createdBy: str
+    updatedDate: str
+    updatedBy: str
+    isDeleted: bool
+    deletedDate: str
+    deletedBy: str
     status: bool
 
