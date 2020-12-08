@@ -18,7 +18,7 @@ def get_all_templates():
     cur = conn.cursor()
 
     # Execute a query
-    cur.execute("SELECT * FROM my_data")
+    cur.execute("SELECT * FROM templates")
 
     # Retrieve query results
     records = cur.fetchall()
