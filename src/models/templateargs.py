@@ -10,13 +10,14 @@ class TemplateArgs(BaseModel):
     name: str
     width: int
     height: int
-    tags: list = None
+    tags: Optional[list] = None
     createdDate: str
     createdBy: str
-    updatedDate: str = None
-    updatedBy: str = None
-    isDeleted: bool = False
-    deletedDate: str = None
-    deletedBy: str = None
-    isReady: bool = False
+    updatedDate: Optional[str] = None
+    updatedBy: Optional[str] = None
+    isDeleted: Optional[bool] = None
+    deletedDate: Optional[str] = None
+    deletedBy: Optional[str] = None
+    isReady: Optional[bool] = None
+
 
