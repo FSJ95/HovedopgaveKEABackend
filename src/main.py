@@ -42,6 +42,7 @@ def delete_template_request(template_id: int):
 
 @app.delete("/upload/{upload_id}")
 def delete_upload(upload_id):
+    
     return delete_upload_from_amazon(upload_id)
 
 @app.get("/upload/feed")
