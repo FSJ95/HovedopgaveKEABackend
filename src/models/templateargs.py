@@ -4,6 +4,7 @@
 # Find tutorial here: https://fastapi.tiangolo.com/
 
 from pydantic import BaseModel
+from typing import Optional
 
 class TemplateArgs(BaseModel):
     id: int

@@ -4,8 +4,11 @@
 # Find tutorial here: https://fastapi.tiangolo.com/
 
 from pydantic import BaseModel
+from typing import Optional
 
 #TODO: Set all the requirements for how many objects, rotation osv
 
 class FeedRequestArgs(BaseModel):
     url: str
+    updateInterval: Optional[int]
+    amountOfObjects: Optional[int]

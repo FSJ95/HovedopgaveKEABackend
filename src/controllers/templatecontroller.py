@@ -1,7 +1,7 @@
 from models.templateargs import TemplateArgs
 
 import psycopg2
-
+from fastapi import FastAPI
 
 #TODO: Implement all banner template logic in here including database handling
 
