@@ -6,8 +6,6 @@ from utilities.conversion.to_json_converter import *
 
 from urllib.request import urlopen
 
-import uuid
-
 allowedLinkTypes = ["csv", "json", "xml"]
 
 def get_and_parse_file(fileRequestArgs: FileRequestArgs):
@@ -15,6 +13,12 @@ def get_and_parse_file(fileRequestArgs: FileRequestArgs):
     errorMsg = {"Status": "Error"}
 
     url = fileRequestArgs.url
+
+    ext = None
+
+    name = None
+
+    toJson = None
 
     if url.find('/'):
         name = url.rsplit('/', 1)[1]
@@ -27,18 +31,23 @@ def get_and_parse_file(fileRequestArgs: FileRequestArgs):
         
     if ext == 'csv':
         toJson = csv_stream_to_json(data)
-        if(not toJson):
+        if not toJson:
             return errorMsg
 
     if ext == "xml":
         toJson = xml_stream_to_json(data)
-        if(not toJson):
+        if not toJson:
             return errorMsg      
+
+    #TODO: Update updateInterval and amountOfObjects in database
+
+    #TODO: Refactor if statements to switch statement
 
     return upload_file_and_return(toJson, name, ext)
 
 def upload_file_and_return(jsonData, name, ext):
-    if(upload_file(jsonData)):
+
+    if upload_file(jsonData):
         return {
                     "status" : "Success",
                     "file" : {

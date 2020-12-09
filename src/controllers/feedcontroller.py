@@ -6,10 +6,9 @@ from utilities.conversion.to_json_converter import *
 
 from urllib.request import urlopen
 
-import uuid
 import requests
 
-allowedFeedTypes = ["xml", "csv"]
+allowedFeedTypes = ["xml", "csv", "rss+xml", "xhtml+xml"]
 
 def get_and_parse_feed(feedRequstArgs: FeedRequestArgs):
 
@@ -27,22 +26,44 @@ def get_and_parse_feed(feedRequstArgs: FeedRequestArgs):
     with urlopen(url) as x:
         data = x.read().decode('utf-8')
 
+    toJson = None
+
     if ext == 'csv':
         toJson = csv_stream_to_json(data)
 
-        if(not toJson):
+        if not toJson:
             return errorMsg        
 
     if ext == "xml":
         toJson = xml_stream_to_json(data)
 
-        if(not toJson):            
+        if not toJson:            
             return errorMsg     
 
-    return upload_feed_and_return(toJson, ext)
+    if ext == "rss+xml":
+        toJson = xml_stream_to_json(data)
+
+        if not toJson:            
+            return errorMsg     
+    
+    if ext == "xhtml+xml":
+        toJson = xml_stream_to_json(data)
+
+        if not toJson:            
+            return errorMsg     
+
+    #TODO: Update updateInterval and amountOfObjects in database¨
+
+    #TODO: Refactor if statements to switch statement
+
+    tempJson = json.loads(toJson)
+    newJson = json.dumps(tempJson["rss"]["channel"]["item"])
+
+    return upload_feed_and_return(newJson, ext)
 
 def upload_feed_and_return(jsonData, ext):
-    if(upload_file(jsonData)):
+
+    if upload_file(jsonData):
         return {
                     "status" : "Success",
                     "file" : {
