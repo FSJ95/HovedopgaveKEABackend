@@ -20,5 +20,3 @@ class TemplateArgs(BaseModel):
     deletedDate: Optional[str] = None
     deletedBy: Optional[str] = None
     isReady: Optional[bool] = None
-
-
