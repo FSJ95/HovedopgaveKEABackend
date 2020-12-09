@@ -42,7 +42,7 @@ def get_and_parse_feed(feedRequstArgs: FeedRequestArgs):
     return upload_feed_and_return(toJson, ext)
 
 def upload_feed_and_return(jsonData, ext):
-    if(upload_file(jsonData, str(uuid.uuid4())+".json")):
+    if(upload_file(jsonData)):
         return {
                     "status" : "Success",
                     "file" : {

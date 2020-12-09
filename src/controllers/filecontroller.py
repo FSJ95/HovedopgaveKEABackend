@@ -38,7 +38,7 @@ def get_and_parse_file(fileRequestArgs: FileRequestArgs):
     return upload_file_and_return(toJson, name, ext)
 
 def upload_file_and_return(jsonData, name, ext):
-    if(upload_file(jsonData, str(uuid.uuid4())+".json")):
+    if(upload_file(jsonData)):
         return {
                     "status" : "Success",
                     "file" : {

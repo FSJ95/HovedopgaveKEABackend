@@ -1,6 +1,7 @@
 import logging
 import boto3
 from botocore.exceptions import ClientError
+import uuid
 
 AWS_ACCESS_KEY_ID = 'AKIAZIPZIJIZYAAYD3VL'
 AWS_SECRET_ACCESS_KEY = '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'
@@ -13,7 +14,7 @@ def getClient():
                         aws_secret_access_key=AWS_SECRET_ACCESS_KEY,
                         region_name=REGION_NAME)
 
-def upload_file(content, file_name=None):
+def upload_file(content):
     """Upload a file to an S3 bucket
 
     :param content: content to upload
@@ -21,10 +22,8 @@ def upload_file(content, file_name=None):
     :param file_name: S3 object name. If not specified then content is used
     :return: True if file was uploaded, else False
     """ 
-
-    # If S3 object_name was not specified, use file_name
-    if file_name is None:
-        file_name = content[0:20] + '.json'
+ 
+    file_name = str(uuid.uuid4())+".json"
 
     # Upload the file
     try:
